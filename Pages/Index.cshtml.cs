@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
@@ -24,5 +25,13 @@ public class IndexModel : PageModel
                 Dates.Add(parts[2]);
             }
         }
+    }
+
+    public IActionResult OnPost(string description, double amount)
+    {
+        string date = DateTime.Now.ToString("dd/MM/yyyy");
+        System.IO.File.AppendAllText(filepath, $"{description}, {amount}, {date}\n");
+
+        return RedirectToPage();
     }
 }
