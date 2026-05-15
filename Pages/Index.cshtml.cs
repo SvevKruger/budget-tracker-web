@@ -10,6 +10,10 @@ public class IndexModel : PageModel
     public List<double> Amounts = new List<double>();
     public List<string> Dates = new List<string>();
 
+    public double Balance = 0;
+    public double TotalIncome = 0;
+    public double TotalExpenses = 0;
+
     private string filepath = "transactions.txt";
 
     public void OnGet()
@@ -24,6 +28,20 @@ public class IndexModel : PageModel
                 Amounts.Add(double.Parse(parts[1]));
                 Dates.Add(parts[2]);
             }
+
+            foreach (double amount in Amounts)
+            {
+                if (amount > 0)
+                {
+                    TotalIncome += amount;
+                }
+                else
+                {
+                    TotalExpenses += amount;
+                }
+            }
+
+            Balance = TotalIncome + TotalExpenses;
         }
     }
 
