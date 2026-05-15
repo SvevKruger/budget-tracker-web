@@ -36,6 +36,7 @@
         <th>Date</th>
         <th>Description</th>
         <th>Amount</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -46,6 +47,12 @@
             <td>@Model.Dates[i]</td>
             <td>@Model.Descriptions[i]</td>
             <td>@Model.Amounts[i]</td>
+            <td>
+                <form method="post">
+                <input type="hidden" name="index" value="@i"/>
+                <button type="submit" asp-page-handler="Delete"></button>
+                </form>
+            </td>
         </tr>
     }
     </tbody>

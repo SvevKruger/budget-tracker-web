@@ -52,4 +52,16 @@ public class IndexModel : PageModel
 
         return RedirectToPage();
     }
+
+    public IActionResult OnPostDelete(int index)
+    {
+        if (System.IO.File.Exists(filepath))
+        {
+            string[] lines = System.IO.File.ReadAllLines(filepath);
+            var newLines = lines.Where((line, i) => i != index).ToList();
+            System.IO.File.WriteAllLines(filepath, newLines);
+        }
+
+        return RedirectToPage();
+    }
 }
