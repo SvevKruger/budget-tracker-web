@@ -4,59 +4,89 @@
     ViewData["Title"] = "Budget Tracker";
 }
 
-<h1>Budget Tracker </h1>
+<div class="container mt-4">
+    <h1 class="mb-4">💰 Budget Tracker</h1>
 
-<h2>Add Transaction</h2>
-
-<form method="post">
-    <div>
-        <label>Description:</label>
-        <input type="text" name="description" placeholder="eg, salary rent"/>
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">Total Income</h5>
+                    <h3>@Model.TotalIncome</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <h5 class="card-title">Total Expenses</h5>
+                    <h3>@Model.TotalExpenses</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Balance</h5>
+                    <h3>@Model.Balance</h3>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label>Amount:</label>
-        <input type="number" name="amount" step="0.01" placeholder="eg. 1500 or -500"/>
+
+    <!-- Add Transaction Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Add Transaction</h5>
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-5">
+                        <input type="text" name="description" class="form-control" placeholder="Description e.g. salary, rent" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" name="amount" class="form-control" step="0.01" placeholder="Amount e.g. 1500 or -500" />
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">Add Transaction</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    <button type="submit">Add Transaction</button>
-</form>
 
-<h2>Summary</h2>
-
-<div>
-    <p>Balance: <strong>@Model.Balance</strong></p>
-    <p>TotalIncome: <strong>@Model.TotalIncome</strong></p>
-    <p>TotalExpenses: <strong>@Model.TotalExpenses</strong></p>
+    <!-- Transactions Table -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Transactions</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Descriptions.Count; i++)
+                    {
+                        <tr>
+                            <td>@Model.Dates[i]</td>
+                            <td>@Model.Descriptions[i]</td>
+                            <td class="@(Model.Amounts[i] > 0 ? "text-success" : "text-danger")">
+                                @Model.Amounts[i]
+                            </td>
+                            <td>
+                                <form method="post">
+                                    <input type="hidden" name="index" value="@i" />
+                                    <button type="submit" asp-page-handler="Delete" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
-<h2>Transactions:</h2>
-
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Date</th>
-        <th>Description</th>
-        <th>Amount</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    @for (int i = 0; i < Model.Descriptions.Count; i++)
-    {
-        <tr>
-            <td>@Model.Dates[i]</td>
-            <td>@Model.Descriptions[i]</td>
-            <td>@Model.Amounts[i]</td>
-            <td>
-                <form method="post">
-                <input type="hidden" name="index" value="@i"/>
-                <button type="submit" asp-page-handler="Delete"></button>
-                </form>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
-
-
-<p>Welcome to your personal budget tracker! </p>
